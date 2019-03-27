@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+canvas{
+	border: 1px dashed grey;
+	cursor: crosshair;
+}
+
+ul {	
+	display:flex;
+	flex-direction:column;
+	list-style: none;
+	/*border: 1px dashed blue;*/
+}
+li {
+	margin:0 5px 30px 0;
+	/*border: 1px dashed green;*/
+}
+
+.panel {
+	display:none;
+	position:fixed;
+	bottom:0;
+	right:0;
+	background-image:linear-gradient(to left,rgba(200,200,200,1),rgba(200,200,200,0));
+	height: 100%;
+}
+
+.colorSelection {
+	width: 40px;
+	height: 40px;
+	background: rgb(220,20,60);
+}
+
+.palette {
+	width:100%;
+}
+
+.palette li {
+	margin:0;
+	margin-left: -40px;
+	width: 100%;
+	height: 25px;
+	color: white;
+	text-align: center;	
+}
+
+.palette li:last-child {
+	color:black;
+} 
+
+.r {background: rgb(220,20,60);}
+.b {background: rgb(65,105,225);}
+.y {background: rgb(255,215,0);}
+.p {background: rgb(255,192,203);}
+.g {background: rgb(46,139,87);}
+.o {background: rgb(255,165,0);}
+.w {background: rgb(250,250,235);}
+
+
+
+/*for larger, non-mobile screens*/
+@media screen and (min-width:700px) {
+.panel {
+	display:block;
+}
+
+} /* END MEDIA QUERY
+
+
+
+</style>
+</head>
+
+<body>
+<canvas id='canvas' width='300' height='300'>
+</canvas>
+<div class = 'panel'>
+<ul>
+	<li>color<div class = 'colorSelection'>
+	</div></li>
+	<li>palette
+		<ul class = 'palette'>
+		<li class = 'r'>r</li>
+		<li class = 'b'>b</li>
+		<li class = 'y'>y</li>
+		<li class = 'p'>p</li>
+		<li class = 'g'>g</li>
+		<li class = 'o'>o</li>
+		<li class = 'w'>w</li>
+		</ul>
+	</li>
+	<li>brush<br>size:<div class = 'brushSize'>40
+	</div>'up':+<br>'down':-</li>
+	<li>clear:<div class = 'clearCanvas'>space <br>bar
+	</div></li>
+	<li>cnvs w:<div class = 'canvasWidth'>300</div>
+	'[':-<br>']':+</li>
+	<li>cnvs h:<div class = 'canvasHeight'>300</div>
+	'-':-<br>'+':+</li>
+</ul>
+</div>
+<script>
+
+var c = document.getElementById('canvas');
+var ctx = c.getContext('2d');
+var x = 0;
+var y = 0;
+var a = 1;
+var opacity = 'rgba(0,0,0'+a+')';
+var color = 'rgba(220,20,60,'+a+')';
+var radius = 40;
+	
+function draw(){
+	ctx.beginPath();
+	ctx.fillStyle = color;
+	ctx.arc(x,y,radius,0,2*Math.PI);
+	ctx.fill();
+}
+
+//START DRAWING when the finger is on the screen
+window.addEventListener('touchstart', function(e){
+	x = e.pageX;
+	y = e.pageY;
+	draw();
+})
+
+//CLEAR SCREEN when the phone is ROTATED
+window.addEventListener('orientationchange', function(e){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);	
+});
+
+
+//START DRAWING when the mouse is moved
+window.addEventListener('mousemove', function (e) {
+	x = e.pageX;
+	y = e.pageY;
+	draw();
+});
+
+//KEYDOWN: for keys that don't display a character
+window.addEventListener('keydown', function (e) {
+	console.log(e.keyCode); 
+	if (e.keyCode == 40) {
+		if (radius > 5) {
+			{radius -= 5;}
+		}
+	};//'cursor up': brush size decrease
+	if (e.keyCode == 38) {radius += 5;}//'cursor down': brush size increase
+	document.querySelector('.brushSize').innerHTML = radius; //brush size display below canvas
+
+	// WORKING ON USING 'SHIFT' TO PICK UP BRUSH...
+	// if (e.keyCode == 16) {
+	// 	ctx.moveTo(0,0); 
+			// (window.addEventListener('keyup', function(e) {
+			// 	if (e.keyCode == 16) {x = x}
+			// 	})),
+			// 	(window.addEventListener('keyup', function(e) {
+			// 	if (e.keyCode == 16) {y = y}
+			// 	})))
+		// draw()	
+		// }
+	
+});
+
+//KEYPRESS: for keys that DO display a character
+window.addEventListener('keypress', function (e) {
+	console.log(e.keyCode);
+
+	if (e.keyCode == 98) {color = 'rgba(65,105,225,'+a+')'} //b:blue
+	if (e.keyCode == 114) {color = 'rgba(220,20,60,'+a+')'} //r:red
+	if (e.keyCode == 121) {color = 'rgba(255,215,0,'+a+')'}//y:yellow
+	if (e.keyCode == 103) {color = 'rgba(46,139,87,'+a+')'}//g:green
+	if (e.keyCode == 111) {color = 'rgba(255,165,0,'+a+')'}//o:orange
+	if (e.keyCode == 112) {color = 'rgba(255,192,203,'+a+')'}//p:pink
+	if (e.keyCode == 119) {color = 'rgba(250,250,235,'+a+')'}//w:white
+	document.querySelector('.colorSelection').style.backgroundColor = color;//color preview below Canvas
+
+	if (e.keyCode == 32) {ctx.clearRect(0, 0, canvas.width, canvas.height);}//space bar: clear canvas
+
+	if (e.keyCode == 91) {
+		if (canvas.width > 100) {
+			canvas.width -= 50} 
+		} //'[': decrease canvas width
+	if (e.keyCode == 93) {canvas.width += 50;}//']': increase canvas width
+	document.querySelector('.canvasWidth').innerHTML = canvas.width;//canvaswidth toolbar
+	
+	if (e.keyCode == 45) {
+		if (canvas.height > 100) {
+			canvas.height -= 50} 
+		} //'[': decrease canvas height
+	if (e.keyCode == 61) {canvas.height += 50;}//']': increase canvas height
+	document.querySelector('.canvasHeight').innerHTML = canvas.height;//canvasHeight toolbar
+	
+
+	//OPACITY INCREASE DECREASE
+	// (e.keyCode == 91) {
+		// if (a > .125) {
+		// 	{a -= .125; opacity -= .125}
+		// }//opacity down
+	// if (e.keyCode == 93) {a += .125;}//opacity up
+});
+
+
+</script>
+
+</body>
+</html>
