@@ -7,8 +7,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style type="text/css">
 
+body{
+	font-family:sans-serif;
+}
+
+h1{
+	text-align: center;	
+}
+
 canvas{
-	border: 1px dashed grey;
+	border: 2px dashed grey;
 	cursor: crosshair;
 }
 
@@ -20,14 +28,13 @@ canvas{
 .mobilePalette {
 	display:grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-	/*border: 1px dashed blue;*/
-	padding-left: 0;	
+	padding-left: 0;
+	border:1px solid grey;	
 }
 
 .mobilePalette li{
 	margin:0;
 	height:50px;
-	/*border: 1px dotted red;*/
 }
 
 .mobilePalette .current{
@@ -37,7 +44,6 @@ canvas{
 li {
 	margin:0 5px 30px 0;
 	list-style: none;
-	/*border: 1px dashed green;*/
 }
 
 .colorSelection {
@@ -55,7 +61,8 @@ li {
 .w {background: rgb(250,250,235);}
 
 /*for larger, non-mobile screens*/
-@media screen and (min-width:400px) {
+@media screen and (min-width:700px) {
+
 .panel {
 	list-style: none;
 	display:block;
@@ -89,7 +96,6 @@ li {
 .mobilePalette {
 	display:none;
 }
-
 } /* END MEDIA QUERY
 
 </style>
@@ -127,13 +133,16 @@ li {
 	</div>'up':+<br>'down':-</li>
 	<li>clear:<div class = 'clearCanvas'>space <br>bar
 	</div></li>
-	<li>cnvs w:<div class = 'canvasWidth'>300</div>
+	<li>cnvs w:<div class = 'canvasWidth'>600</div>
 	'[':-<br>']':+</li>
 	<li>cnvs h:<div class = 'canvasHeight'>300</div>
 	'-':-<br>'+':+</li>
 </ul>
+<h1>Javascript Canvas <br>by Mike White</h1>
+
 <script>
 // console.log('javascript canvas by Mike White')
+// $('canvas').css({'width':'100%'});
 
 var c = document.getElementById('canvas');
 var ctx = c.getContext('2d');
