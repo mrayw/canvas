@@ -13,11 +13,13 @@ body{
 }
 
 h1{
-	text-align: center;	
+	text-align: center;
+	display: none; 	
 }
 
 canvas{
 	border: 2px dashed grey;
+	border-radius: 10px;
 	cursor: crosshair;
 }
 
@@ -67,13 +69,17 @@ li {
 .w {background: rgb(250,250,235);}
 
 /*for larger, non-mobile screens*/
-@media screen and (min-width:700px) {
+@media screen and (min-width:200px) {
+
+canvas {
+	/*width: '600';*/
+}
 
 .panel {
 	list-style: none;
 	display:block;
 	position:fixed;
-	bottom:0;
+	bottom:-16px;
 	right:0;
 	background-image:linear-gradient(to left,rgba(200,200,200,1),rgba(200,200,200,0));
 	height: 100%;
@@ -140,9 +146,9 @@ li {
 	</div>'up':+<br>'down':-</li>
 	<li>clear:<div class = 'clearCanvas'>space <br>bar
 	</div></li>
-	<li>cnvs w:<div class = 'canvasWidth'>600</div>
+	<li>cnvs w:<div class = 'canvasWidth'></div>
 	'[':-<br>']':+</li>
-	<li>cnvs h:<div class = 'canvasHeight'>300</div>
+	<li>cnvs h:<div class = 'canvasHeight'></div>
 	'-':-<br>'+':+</li>
 </ul>
 <h1>Javascript Canvas <br>by Mike White</h1>
@@ -170,6 +176,14 @@ var white = 'rgba(250,250,235,'+a+')';
 var color = red; //initial color assignment is red
 var radius = 40;
 	
+
+console.log(window.innerWidth);
+var w = (window.innerWidth) * .8;
+var h = (window.innerHeight) * .8;
+
+document.querySelector('canvas').width = w;
+document.querySelector('canvas').height = h;[[]]
+
 function draw(){
 	ctx.beginPath();
 	ctx.fillStyle = color;
@@ -179,8 +193,6 @@ function draw(){
 
 //START DRAWING when the finger is on the screen
 window.addEventListener('touchstart', function(e){
-	// x = e.pageX;
-	// y = e.pageY;
 	// console.log(e.touches[0], e.type);
 	window.addEventListener('touchmove', function(e){
 		// console.log(e.touches[0].pageX);
@@ -195,7 +207,6 @@ window.addEventListener('touchstart', function(e){
 $('.mobilePalette li').on('touchstart', function(e) {
 	// $(e.target).addClass('current'); //adds 'current' class to selected color
 
-
 	var mobileSelection = e.target.className;
 	if (mobileSelection == 'r') {color = red};
 	if (mobileSelection == 'b') {color = blue};
@@ -207,17 +218,16 @@ $('.mobilePalette li').on('touchstart', function(e) {
 
 });
 
-
 //CLEAR SCREEN when the phone is ROTATED
 window.addEventListener('orientationchange', function(e){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);	
 });
 
-
 //START DRAWING when the mouse is moved
 window.addEventListener('mousemove', function (e) {
-	x = e.pageX;
-	y = e.pageY;
+	// console.log(e);
+	x = e.offsetX;
+	y = e.offsetY;
 	draw();
 });
 
@@ -255,27 +265,14 @@ $('.palette li').focus(function(x) {
 
 //KEYDOWN: for keys that don't display a character
 window.addEventListener('keydown', function (e) {
-	// console.log(e.keyCode); 
+	console.log(e.keyCode); 
 	if (e.keyCode == 40) {
-		if (radius > 5) {
+		if (radius > 0) {
 			{radius -= 5;}
 		}
 	};//'cursor up': brush size decrease
 	if (e.keyCode == 38) {radius += 5;}//'cursor down': brush size increase
 	document.querySelector('.brushSize').innerHTML = radius; //brush size display below canvas
-
-	// WORKING ON USING 'SHIFT' TO PICK UP BRUSH...
-	// if (e.keyCode == 16) {
-	// 	ctx.moveTo(0,0); 
-			// (window.addEventListener('keyup', function(e) {
-			// 	if (e.keyCode == 16) {x = x}
-			// 	})),
-			// 	(window.addEventListener('keyup', function(e) {
-			// 	if (e.keyCode == 16) {y = y}
-			// 	})))
-		// draw()	
-		// }
-	
 });
 
 //KEYPRESS: for keys that DO display a character
