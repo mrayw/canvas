@@ -5,6 +5,7 @@
 <title>Document</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <style type="text/css">
 
 body{
@@ -29,12 +30,17 @@ canvas{
 	display:grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	padding-left: 0;
-	border:1px solid grey;	
+		
 }
 
 .mobilePalette li{
 	margin:0;
 	height:50px;
+	border:1px solid grey;
+}
+
+.mobilePalette li:last-child{
+	border:none;
 }
 
 .mobilePalette .current{
@@ -113,6 +119,7 @@ li {
 	<li class = 'g' ></li>
 	<li class = 'o' ></li>
 	<li class = 'w' ></li>
+	<li><i class="fas fa-sync-alt"><br>to clear</i></li>
 </ul>
 
 <ul class = 'panel'>
