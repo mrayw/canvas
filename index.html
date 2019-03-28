@@ -219,8 +219,8 @@ $('.mobilePalette li').on('touchstart', function(e) {
 //CLEAR SCREEN when the phone is ROTATED
 window.addEventListener('orientationchange', function(e){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	w = (window.innerWidth) * .95;
-	h = (window.innerHeight) * .8;	
+	w = (window.innerWidth);
+	h = (window.innerHeight);	
 });
 
 //START DRAWING when the mouse is moved
