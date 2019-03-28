@@ -71,21 +71,21 @@ li {
 /*for larger, non-mobile screens*/
 @media screen and (min-width:700px) {
 
-canvas {
-	/*width: '600';*/
-}
-
 .panel {
 	list-style: none;
-	display:block;
+	display:flex;
+	flex-direction: column;
 	position:fixed;
-	bottom:-16px;
+	bottom:0;
 	right:0;
-	background-image:linear-gradient(to left,rgba(200,200,200,1),rgba(200,200,200,0));
-	height: 100%;
+	background-image: linear-gradient(to right,rgba(200,200,200,1),rgba(150,150,150,1));
+	border: 2px groove;
+	height:100%;
+	margin-bottom: -5px;
 }
 
 .palette {
+	margin-left: -40px;
 	width:100%;
 	cursor: pointer;
 	cursor: hand;
@@ -93,15 +93,14 @@ canvas {
 
 .palette li {
 	margin:0;
-	margin-left: -40px;
-	width: 100%;
-	height: 25px;
+	width: 40px;
+	height: 40px;
 	color: white;
 	text-align: center;	
 	list-style: none;
 }
 
-.palette li:last-child {
+.palette li:nth-child(n+7) {
 	color:black;
 } 
 
@@ -140,18 +139,18 @@ canvas {
 		<li class = 'g' tabindex="0" >g</li>
 		<li class = 'o' tabindex="0" >o</li>
 		<li class = 'w' tabindex="0" >w</li>
+		<li class = 'custom'>custom<br><input type="color" id="custom" name="custom" value="#9141d8"><label for="custom"><br></label></li>
 		</ul>
 	</li>
 	<li>brush<br>size:<div class = 'brushSize'>40
 	</div>'up':+<br>'down':-</li>
 	<li>clear:<div class = 'clearCanvas'>space <br>bar
 	</div></li>
-	<li>cnvs w:<div class = 'canvasWidth'></div>
-	'[':-<br>']':+</li>
-	<li>cnvs h:<div class = 'canvasHeight'></div>
-	'-':-<br>'+':+</li>
+	<li>cnvs w:<div class = 'canvasWidth'></div></li>
+	<li>cnvs h:<div class = 'canvasHeight'></div></li>
 </ul>
 <h1>Javascript Canvas <br>by Mike White</h1>
+
 
 <script>
 // console.log('javascript canvas by Mike White')
@@ -172,14 +171,13 @@ var green = 'rgba(46,139,87,'+a+')';
 var orange = 'rgba(255,165,0,'+a+')';
 var pink = 'pink';
 var white = 'rgba(250,250,235,'+a+')';
+var custom = document.querySelector('#custom').value;
 
 var color = red; //initial color assignment is red
 var radius = 40;
-	
 
-console.log(window.innerWidth);
-var w = (window.innerWidth) * .8;
-var h = (window.innerHeight) * .7;
+var w = (window.innerWidth) * .85;
+var h = (window.innerHeight) * .95;
 
 document.querySelector('canvas').width = w;
 document.querySelector('canvas').height = h;[[]]
@@ -220,22 +218,30 @@ $('.mobilePalette li').on('touchstart', function(e) {
 
 //CLEAR SCREEN when the phone is ROTATED
 window.addEventListener('orientationchange', function(e){
-	ctx.clearRect(0, 0, canvas.width, canvas.height);	
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	w = (window.innerWidth) * .95;
+	h = (window.innerHeight) * .8;	
 });
 
 //START DRAWING when the mouse is moved
 window.addEventListener('mousemove', function (e) {
 	// console.log(e);
-	x = e.offsetX;
-	y = e.offsetY;
+	x = e.pageX - 10;
+	y = e.pageY - 10;
 	draw();
+
+	// color = document.querySelector('#custom').value;
 });
 
 //SELECT COLOR when mouse click on palette color
 $('.palette li').click(function(x) {
 	var colorSelection = x.currentTarget.innerHTML;
-	// console.log(colorSelection);
+	
 
+	// var customSelection = document.querySelector('#custom').value;
+
+	// console.log(colorSelection);	
+	
 	if (colorSelection == 'r') {color = red};
 	if (colorSelection == 'b') {color = blue};
 	if (colorSelection == 'y') {color = yellow};
@@ -243,6 +249,10 @@ $('.palette li').click(function(x) {
 	if (colorSelection == 'g') {color = green};
 	if (colorSelection == 'o') {color = orange};
 	if (colorSelection == 'w') {color = white};
+	if (!(colorSelection in ['r','b','y','p','g','o','w'])) {color = document.querySelector('#custom').value};
+	
+
+	// document.querySelector('#custom').value;
 
 	document.querySelector('.colorSelection').style.backgroundColor = color;//color preview below Canvas
 });
@@ -260,12 +270,14 @@ $('.palette li').focus(function(x) {
 	if (tabSelection == 'o') {color = orange};
 	if (tabSelection == 'w') {color = white};
 
-	document.querySelector('.colorSelection').style.backgroundColor = color;//color preview below Canvas
+	// document.querySelector('.colorSelection').style.
+
+	backgroundColor = color;//color preview below Canvas
 });
 
 //KEYDOWN: for keys that don't display a character
 window.addEventListener('keydown', function (e) {
-	console.log(e.keyCode); 
+	// console.log(e.keyCode); 
 	if (e.keyCode == 40) {
 		if (radius > 0) {
 			{radius -= 5;}
@@ -277,7 +289,7 @@ window.addEventListener('keydown', function (e) {
 
 //KEYPRESS: for keys that DO display a character
 window.addEventListener('keypress', function (e) {
-	// console.log(e.keyCode);
+	console.log(e.keyCode);
 
 	if (e.keyCode == 98) {color = blue}; //b:blue
 	if (e.keyCode == 114) {color = red}; //r:red
@@ -286,6 +298,7 @@ window.addEventListener('keypress', function (e) {
 	if (e.keyCode == 111) {color = orange};//o:orange
 	if (e.keyCode == 112) {color = pink}//p:pink
 	if (e.keyCode == 119) {color = white};//w:white
+	
 	
 	document.querySelector('.colorSelection').style.backgroundColor = color;//color preview below Canvas
 
