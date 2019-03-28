@@ -71,6 +71,10 @@ li {
 /*for larger, non-mobile screens*/
 @media screen and (min-width:700px) {
 
+canvas {
+	/*width: '600';*/
+}
+
 .panel {
 	list-style: none;
 	display:block;
@@ -147,7 +151,7 @@ li {
 	<li>cnvs h:<div class = 'canvasHeight'></div>
 	'-':-<br>'+':+</li>
 </ul>
-<h1>Javascript Canvas by Mike White</h1>
+<h1>Javascript Canvas <br>by Mike White</h1>
 
 <script>
 // console.log('javascript canvas by Mike White')
@@ -175,7 +179,7 @@ var radius = 40;
 
 console.log(window.innerWidth);
 var w = (window.innerWidth) * .8;
-var h = (window.innerHeight) * .8;
+var h = (window.innerHeight) * .7;
 
 document.querySelector('canvas').width = w;
 document.querySelector('canvas').height = h;[[]]
