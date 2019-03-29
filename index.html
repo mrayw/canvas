@@ -198,13 +198,16 @@ window.addEventListener('touchstart', function(e){
 		y = e.touches[0].pageY;
 		draw();
 	});
+
+	//DECREASE BRUSH SIZE with two finger taps 
 	if (e.touches.length == 2) {
 		if (radius > 5) {
 			radius -= 5;};
 		};
 	
+	//INCREASE BRUSH SIZE with three finger taps
 	if (e.touches.length == 3) {
-		radius -= 5;
+		radius += 5;
 	};
 });
 
