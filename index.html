@@ -13,7 +13,7 @@ html, body {
   overflow-y: hidden;
 }
 body {
-  position: relative;
+  position: fixed;
   font-family:sans-serif;
 }
 
@@ -30,7 +30,6 @@ canvas{
 
 .panel {	
 	display:none;
-	/*border: 1px dashed blue;*/
 }
 
 .mobilePalette {
@@ -40,17 +39,14 @@ canvas{
 	position: fixed;
 	width:100%;
 	bottom:-15px;
+	left:0;
+	border-top:1px solid darkgrey;
 }
 
 .mobilePalette li{
 	margin:0;
 	height:50px;
-	/*border:1px solid grey;*/
 }
-/*
-.mobilePalette li:last-child{
-	border:none;
-}*/
 
 /*.mobilePalette .current{
 	border:2px solid black;
@@ -147,7 +143,7 @@ li {
 		<li class = 'g' tabindex="0" >g</li>
 		<li class = 'o' tabindex="0" >o</li>
 		<li class = 'w' tabindex="0" >w</li>
-		<li class = 'custom'>custom<br><input type="color" id="custom" name="custom" value="#9141d8"><label for="custom"><br></label></li>
+		<li class = 'custom'>custom<br><input type="color" id="custom" name="custom" value="#341910"><label for="custom"><br></label></li>
 		</ul>
 	</li>
 	<li>brush<br>size:<div class = 'brushSize'>40
