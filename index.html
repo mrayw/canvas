@@ -177,7 +177,7 @@ var color = red; //initial color assignment is red
 var radius = 40;
 
 var w = (window.innerWidth) * .85;
-var h = (window.innerHeight) * .95;
+var h = (window.innerHeight) * .85;
 
 document.querySelector('canvas').width = w;
 document.querySelector('canvas').height = h;[[]]
@@ -198,7 +198,14 @@ window.addEventListener('touchstart', function(e){
 		y = e.touches[0].pageY;
 		draw();
 	});
+	if (e.touches.length == 2) {
+		if (radius > 5) {
+			radius -= 5;};
+		};
 	
+	if (e.touches.length == 3) {
+		radius -= 5;
+	};
 });
 
 //SELECT COLOR in MOBILE and add 'active'
@@ -218,9 +225,8 @@ $('.mobilePalette li').on('touchstart', function(e) {
 
 //CLEAR SCREEN when the phone is ROTATED
 window.addEventListener('orientationchange', function(e){
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	w = (window.innerWidth);
-	h = (window.innerHeight);	
+	// ctx.clearRect(0, 0, canvas.width, canvas.height);
+	location.reload();	
 });
 
 //START DRAWING when the mouse is moved
