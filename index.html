@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Document</title>
+<title>Javascript Paint</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
 <link rel="shortcut icon" type="image/png" href="https://mrayw.github.io/canvas/favicon.png"/>
@@ -61,10 +61,6 @@ canvas{
 	margin:0;
 	height:50px;
 }
-
-/*.mobilePalette .current{
-	border:2px solid black;
-}*/
 
 li {
 	margin:0 5px 30px 0;
@@ -250,7 +246,7 @@ window.addEventListener('touchstart', function(e) {
 });
 
 //HIDE POPUP on click
-window.addEventListener('onclick', function(e) {
+window.addEventListener('click', function(e) {
 	document.querySelector('.popup').style.display = 'none';
 });
 
