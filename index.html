@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Document</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+<link rel="shortcut icon" type="image/png" href="https://mrayw.github.io/canvas/favicon.png"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <style type="text/css">
@@ -17,9 +19,21 @@ body {
   font-family:sans-serif;
 }
 
+.popup {
+	background: lightgrey;
+	background-image: linear-gradient(to bottom right,peachpuff,palegreen);
+	padding: 20px;
+	border: 1px solid black;
+	border-radius: 10px;
+	position:fixed;
+	top: 150px;
+	left: 50px;
+	box-shadow: 5px 5px 20px black;
+}
+
 h1{
-	text-align: center;
-	display: none; 	
+	font-size: 1em;
+	text-align: center; 	
 }
 
 canvas{
@@ -74,6 +88,10 @@ li {
 /*for larger, non-mobile screens*/
 @media screen and (min-width:700px) {
 
+.popup {
+	display: none;
+}
+
 .panel {
 	list-style: none;
 	display:flex;
@@ -85,6 +103,10 @@ li {
 	border: 2px groove;
 	height:100%;
 	margin-bottom: -5px;
+}
+
+.panel li{
+	margin-right: 10px;
 }
 
 .palette {
@@ -116,6 +138,12 @@ li {
 </head>
 
 <body>
+
+<div class = 'popup'>
+<h1>A Finger Painting Canvas<br>by Mike White</h1>
+<p>2-finger tap to shrink brush <br>3-finger tap to grow brush</p><p>rotate screen to clear canvas</p><p>enjoy!</p>
+</div>
+
 <canvas id='canvas' width='300' height='300'>
 </canvas>
 
@@ -153,7 +181,7 @@ li {
 	<li>cnvs w:<div class = 'canvasWidth'></div></li>
 	<li>cnvs h:<div class = 'canvasHeight'></div></li>
 </ul>
-<h1>Javascript Canvas <br>by Mike White</h1>
+
 
 
 <script>
@@ -165,6 +193,8 @@ var ctx = c.getContext('2d');
 var x = 0;
 var y = 0;
 var a = 1;
+
+
 // var opacity = 'rgba(0,0,0'+a+')';
 
 //assign colors to variables for easy refrence 
@@ -175,7 +205,7 @@ var green = 'rgba(46,139,87,'+a+')';
 var orange = 'rgba(255,165,0,'+a+')';
 var pink = 'pink';
 var white = 'rgba(250,250,235,'+a+')';
-var custom = document.querySelector('#custom').value;
+// var custom = document.querySelector('#custom').value;
 
 var color = red; //initial color assignment is red
 var radius = 40;
@@ -198,8 +228,8 @@ window.addEventListener('touchstart', function(e){
 	// console.log(e.touches[0], e.type);
 	window.addEventListener('touchmove', function(e){
 		// console.log(e.touches[0].pageX);
-		x = e.touches[0].pageX;
-		y = e.touches[0].pageY;
+		x = e.touches[0].pageX-30;
+		y = e.touches[0].pageY-40;
 		draw();
 	});
 
@@ -214,11 +244,19 @@ window.addEventListener('touchstart', function(e){
 		radius += 5;
 	};
 });
+//HIDE POPUP on touch
+window.addEventListener('touchstart', function(e) {
+	document.querySelector('.popup').style.display = 'none';
+});
 
-//SELECT COLOR in MOBILE and add 'active'
+//HIDE POPUP on click
+window.addEventListener('onclick', function(e) {
+	document.querySelector('.popup').style.display = 'none';
+});
+
+//SELECT COLOR in MOBILE and 
 $('.mobilePalette li').on('touchstart', function(e) {
 	// $(e.target).addClass('current'); //adds 'current' class to selected color
-
 	var mobileSelection = e.target.className;
 	if (mobileSelection == 'r') {color = red};
 	if (mobileSelection == 'b') {color = blue};
@@ -298,11 +336,13 @@ window.addEventListener('keydown', function (e) {
 	};//'cursor up': brush size decrease
 	if (e.keyCode == 38) {radius += 5;}//'cursor down': brush size increase
 	document.querySelector('.brushSize').innerHTML = radius; //brush size display below canvas
+
 });
+
 
 //KEYPRESS: for keys that DO display a character
 window.addEventListener('keypress', function (e) {
-	console.log(e.keyCode);
+	// console.log(e.keyCode);
 
 	if (e.keyCode == 98) {color = blue}; //b:blue
 	if (e.keyCode == 114) {color = red}; //r:red
@@ -330,16 +370,7 @@ window.addEventListener('keypress', function (e) {
 		} //'[': decrease canvas height
 	if (e.keyCode == 61) {canvas.height += 50;}//']': increase canvas height
 	document.querySelector('.canvasHeight').innerHTML = canvas.height;//canvasHeight toolbar
-	
-
-	//OPACITY INCREASE DECREASE
-	// (e.keyCode == 91) {
-		// if (a > .125) {
-		// 	{a -= .125; opacity -= .125}
-		// }//opacity down
-	// if (e.keyCode == 93) {a += .125;}//opacity up
 });
-
 
 </script>
 
