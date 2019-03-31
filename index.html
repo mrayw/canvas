@@ -21,14 +21,13 @@ body {
 
 .popup {
 	background: lightgrey;
-	background-image: linear-gradient(to bottom right,peachpuff,palegreen);
+	background-image: linear-gradient(to bottom right,salmon,peachpuff,palegreen,aqua);
 	padding: 20px;
-	border: 1px solid black;
-	border-radius: 10px;
+	border: 3px solid black;
 	position:fixed;
-	top: 150px;
-	left: 50px;
-	box-shadow: 5px 5px 20px black;
+	top: 50px;
+	left: 20px;
+	box-shadow: 5px 5px black;
 }
 
 h1{
@@ -37,8 +36,7 @@ h1{
 }
 
 canvas{
-	border: 2px dashed grey;
-	border-radius: 10px;
+	border: 2px dashed black;
 	cursor: crosshair;
 }
 
@@ -54,12 +52,13 @@ canvas{
 	width:100%;
 	bottom:-15px;
 	left:0;
-	border-top:1px solid darkgrey;
+	border-top:2px solid black;
 }
 
 .mobilePalette li{
 	margin:0;
 	height:50px;
+	border: 1px solid black;
 }
 
 li {
@@ -82,10 +81,14 @@ li {
 .w {background: rgb(250,250,235);}
 
 /*for larger, non-mobile screens*/
-@media screen and (min-width:700px) {
+@media screen and (min-width:813px) {
 
 .popup {
 	display: none;
+}
+
+canvas {
+	border-radius: 0 10px 10px 10px;
 }
 
 .panel {
@@ -95,10 +98,10 @@ li {
 	position:fixed;
 	bottom:0;
 	right:0;
-	background-image: linear-gradient(to right,rgba(200,200,200,1),rgba(150,150,150,1));
-	border: 2px groove;
+	background-image: linear-gradient(to right,rgba(200,200,200,1),rgba(160,160,160,1));
+	border-left: 3px solid black;
 	height:100%;
-	margin-bottom: -5px;
+	margin-bottom: -1px;
 }
 
 .panel li{
@@ -167,7 +170,7 @@ li {
 		<li class = 'g' tabindex="0" >g</li>
 		<li class = 'o' tabindex="0" >o</li>
 		<li class = 'w' tabindex="0" >w</li>
-		<li class = 'custom'>custom<br><input type="color" id="custom" name="custom" value="#341910"><label for="custom"><br></label></li>
+		<li class = 'custom'>(c)ustom<br><input type="color" id="custom" name="custom" value="#341910"><label for="custom"><br></label></li>
 		</ul>
 	</li>
 	<li>brush<br>size:<div class = 'brushSize'>40
@@ -178,20 +181,15 @@ li {
 	<li>cnvs h:<div class = 'canvasHeight'></div></li>
 </ul>
 
-
-
 <script>
 // console.log('javascript canvas by Mike White')
-// $('canvas').css({'width':'100%'});
+
 
 var c = document.getElementById('canvas');
 var ctx = c.getContext('2d');
 var x = 0;
 var y = 0;
 var a = 1;
-
-
-// var opacity = 'rgba(0,0,0'+a+')';
 
 //assign colors to variables for easy refrence 
 var red = 'rgba(220,20,60,'+a+')';
@@ -201,13 +199,12 @@ var green = 'rgba(46,139,87,'+a+')';
 var orange = 'rgba(255,165,0,'+a+')';
 var pink = 'pink';
 var white = 'rgba(250,250,235,'+a+')';
-// var custom = document.querySelector('#custom').value;
 
 var color = red; //initial color assignment is red
 var radius = 40;
 
 var w = (window.innerWidth) * .85;
-var h = (window.innerHeight) * .85;
+var h = (window.innerHeight) * .75;
 
 document.querySelector('canvas').width = w;
 document.querySelector('canvas').height = h;[[]]
@@ -224,7 +221,7 @@ window.addEventListener('touchstart', function(e){
 	// console.log(e.touches[0], e.type);
 	window.addEventListener('touchmove', function(e){
 		// console.log(e.touches[0].pageX);
-		x = e.touches[0].pageX-30;
+		x = e.touches[0].pageX;
 		y = e.touches[0].pageY-40;
 		draw();
 	});
@@ -241,7 +238,7 @@ window.addEventListener('touchstart', function(e){
 	};
 });
 //HIDE POPUP on touch
-window.addEventListener('touchstart', function(e) {
+window.addEventListener('touchend', function(e) {
 	document.querySelector('.popup').style.display = 'none';
 });
 
@@ -250,9 +247,9 @@ window.addEventListener('click', function(e) {
 	document.querySelector('.popup').style.display = 'none';
 });
 
-//SELECT COLOR in MOBILE and 
+//SELECT COLOR in MOBILE
 $('.mobilePalette li').on('touchstart', function(e) {
-	// $(e.target).addClass('current'); //adds 'current' class to selected color
+	
 	var mobileSelection = e.target.className;
 	if (mobileSelection == 'r') {color = red};
 	if (mobileSelection == 'b') {color = blue};
@@ -288,7 +285,7 @@ $('.palette li').click(function(x) {
 	// var customSelection = document.querySelector('#custom').value;
 
 	// console.log(colorSelection);	
-	
+	if (!(colorSelection in ['r','b','y','p','g','o','w'])) {color = document.querySelector('#custom').value};
 	if (colorSelection == 'r') {color = red};
 	if (colorSelection == 'b') {color = blue};
 	if (colorSelection == 'y') {color = yellow};
@@ -296,11 +293,7 @@ $('.palette li').click(function(x) {
 	if (colorSelection == 'g') {color = green};
 	if (colorSelection == 'o') {color = orange};
 	if (colorSelection == 'w') {color = white};
-	if (!(colorSelection in ['r','b','y','p','g','o','w'])) {color = document.querySelector('#custom').value};
 	
-
-	// document.querySelector('#custom').value;
-
 	document.querySelector('.colorSelection').style.backgroundColor = color;//color preview below Canvas
 });
 
@@ -338,7 +331,7 @@ window.addEventListener('keydown', function (e) {
 
 //KEYPRESS: for keys that DO display a character
 window.addEventListener('keypress', function (e) {
-	// console.log(e.keyCode);
+	console.log(e.keyCode);
 
 	if (e.keyCode == 98) {color = blue}; //b:blue
 	if (e.keyCode == 114) {color = red}; //r:red
@@ -347,6 +340,8 @@ window.addEventListener('keypress', function (e) {
 	if (e.keyCode == 111) {color = orange};//o:orange
 	if (e.keyCode == 112) {color = pink}//p:pink
 	if (e.keyCode == 119) {color = white};//w:white
+
+	if (e.keyCode == 99) {color = document.querySelector('#custom').value}
 	
 	
 	document.querySelector('.colorSelection').style.backgroundColor = color;//color preview below Canvas
